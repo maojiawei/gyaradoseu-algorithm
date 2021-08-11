@@ -16,6 +16,12 @@ package io.jovi.gyaradoseu.algorithm.leetcode.backtracking;
  * @version 1.0
  */
 public class Exist {
+    /**
+     * 单次搜索
+     * @param board
+     * @param word
+     * @return
+     */
     public static boolean exist(char[][] board, String word) {
         // 先找到第一个元素
         char c1 = word.charAt(0);
@@ -50,53 +56,35 @@ public class Exist {
         if (p >= word.length()) {
             return true;
         }
-        char c = word.charAt(p);
+
         // 上下左右四个方向
         // 上
         if (i > 0) {
             int a = i - 1, b = j;
-            char c1 = board[a][b];
-            if (c == c1 && !result[a][b]) {
-                result[a][b] = true;
-                if (backtrace(board, word, result, p + 1, a, b)) {
-                    return true;
-                } else {
-                    result[a][b] = false;
-                }
-
+            if (check(board,word,result,p,a,b)) {
+                return true;
             }
         }
         // 下
         if (i < board.length - 1) {
             int a = i + 1, b = j;
-            char c1 = board[a][b];
-            if (c == c1 && !result[a][b]) {
-                result[a][b] = true;
-                if (backtrace(board, word, result, p + 1, a, b)) {
-                    return true;
-                } else {
-                    result[a][b] = false;
-                }
+            if (check(board,word,result,p,a,b)) {
+                return true;
             }
         }
         // 左
         if (j > 0) {
             int a = i, b = j - 1;
-            char c1 = board[a][b];
-            if (c == c1 && !result[a][b]) {
-                result[a][b] = true;
-                if (backtrace(board, word, result, p + 1, a, b)) {
-                    return true;
-                } else {
-                    result[a][b] = false;
-                }
-
+            if (check(board,word,result,p,a,b)) {
+                return true;
             }
         }
         // 右
         if (j < board[0].length - 1) {
             int a = i, b = j + 1;
-
+            if (check(board,word,result,p,a,b)) {
+                return true;
+            }
         }
         return false;
     }
@@ -111,13 +99,15 @@ public class Exist {
      * @param b
      * @return
      */
-    private boolean check(char[][] board, String word, boolean[][] result, char c, int p, int a, int b) {
+    private static boolean check(char[][] board, String word, boolean[][] result, int p, int a, int b) {
+        char c = word.charAt(p);
         char c1 = board[a][b];
         if (c == c1 && !result[a][b]) {
             result[a][b] = true;
             if (backtrace(board, word, result, p + 1, a, b)) {
                 return true;
             } else {
+                // 如果不存在 就重新置位false
                 result[a][b] = false;
             }
 
